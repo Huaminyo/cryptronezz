@@ -3,7 +3,14 @@ import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  session: { strategy: "jwt" },
+  trustHost: true,
+  session: { 
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  jwt: {
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
   providers: [
     Credentials({
       name: "Guest",
@@ -33,5 +40,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   pages: {
     signIn: "/cryptonez"
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.walletAddress = user.walletAddress;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.walletAddress = token.walletAddress as string;
+      }
+      return session;
+    }
   }
 });
