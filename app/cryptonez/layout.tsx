@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 const navItems = [
   { href: "/cryptonez", label: "Dashboard" },
   { href: "/cryptonez/tasks", label: "Tasks" },
@@ -13,11 +11,15 @@ export default function CryptonezLayout({ children }: { children: React.ReactNod
   return (
     <div className="space-y-6">
       <header className="glass rounded-xl p-4">
-        <nav className="flex flex-wrap gap-2">
+        <nav className="flex flex-wrap gap-2" aria-label="Cryptonez navigation">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className="rounded-lg bg-white/10 px-4 py-2 text-sm hover:bg-white/20">
+            <a
+              key={item.href}
+              href={item.href}
+              className="rounded-lg bg-white/10 px-4 py-2 text-sm hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+            >
               {item.label}
-            </Link>
+            </a>
           ))}
         </nav>
       </header>

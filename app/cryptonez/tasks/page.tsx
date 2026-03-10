@@ -18,6 +18,11 @@ export default async function TasksPage() {
           <TaskCard key={task.id} task={task} />
         ))}
       </div>
+      {data.tasks.length === 0 ? (
+        <section className="glass rounded-xl p-5 text-sm text-slate-300">
+          Belum ada task aktif. Buka halaman Admin untuk membuat task baru.
+        </section>
+      ) : null}
     </main>
   );
 }
