@@ -1,16 +1,15 @@
 import { LeaderboardCard } from "@/components/cryptonez/LeaderboardCard";
+import type { LeaderboardResponse } from "@/lib/cryptonez/types";
+import { fetchJsonSafe, getInternalBaseUrl } from "@/lib/cryptonez/fetcher";
 
-const topUsers = [
-  { userId: 1, name: "0xA1...94f", points: 4250 },
-  { userId: 2, name: "0xB4...1ce", points: 4021 },
-  { userId: 3, name: "0xC7...8ad", points: 3975 }
-];
+export default async function LeaderboardPage() {
+  const baseUrl = await getInternalBaseUrl();
+  const data = await fetchJsonSafe<LeaderboardResponse>(`${baseUrl}/api/leaderboard`, { topUsers: [], topReferrers: [] });
 
-export default function LeaderboardPage() {
   return (
     <main className="space-y-4">
       <h1 className="text-2xl font-bold">Leaderboard</h1>
-      <LeaderboardCard data={{ topUsers, topReferrers: [] }} />
+      <LeaderboardCard data={data} />
       <section className="glass rounded-xl p-5">
         <h2 className="text-lg font-semibold">Top Users</h2>
         <table className="mt-3 w-full text-left text-sm">
@@ -22,7 +21,7 @@ export default function LeaderboardPage() {
             </tr>
           </thead>
           <tbody>
-            {topUsers.map((entry, idx) => (
+            {data.topUsers.map((entry, idx) => (
               <tr key={entry.userId} className="border-t border-white/10">
                 <td className="py-2">#{idx + 1}</td>
                 <td className="py-2">{entry.name}</td>

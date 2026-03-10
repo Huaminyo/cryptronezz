@@ -1,18 +1,21 @@
 import { TaskCard } from "@/components/cryptonez/TaskCard";
+import type { Task } from "@/lib/db/schema";
+import { fetchJsonSafe, getInternalBaseUrl } from "@/lib/cryptonez/fetcher";
 
-const taskPreview = [
-  { title: "Follow on Twitter", description: "Follow @cryptonez", points: 15, type: "follow_twitter", link: "https://x.com" },
-  { title: "Join Discord", description: "Enter the Cryptonez server", points: 20, type: "join_discord", link: "https://discord.com" },
-  { title: "Daily Login", description: "Keep your streak active", points: 5, type: "daily_login", link: "#" }
-] as const;
+type TasksResponse = {
+  tasks: Task[];
+};
 
-export default function TasksPage() {
+export default async function TasksPage() {
+  const baseUrl = await getInternalBaseUrl();
+  const data = await fetchJsonSafe<TasksResponse>(`${baseUrl}/api/tasks`, { tasks: [] });
+
   return (
     <main className="space-y-4">
       <h1 className="text-2xl font-bold">Tasks</h1>
       <div className="grid gap-4 md:grid-cols-3">
-        {taskPreview.map((task) => (
-          <TaskCard key={task.title} task={task} />
+        {data.tasks.map((task) => (
+          <TaskCard key={task.id} task={task} />
         ))}
       </div>
     </main>

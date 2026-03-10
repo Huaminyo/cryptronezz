@@ -1,25 +1,20 @@
-export default function AdminPage() {
+import { AdminPanelClient } from "@/components/cryptonez/AdminPanelClient";
+import { fetchJsonSafe, getInternalBaseUrl } from "@/lib/cryptonez/fetcher";
+
+type AdminResponse = {
+  users: Array<{ id: number; name: string }>;
+  suspiciousActivity: Array<{ id: number; action: string; reason: string }>;
+  tasks: Array<{ id: number; title: string; isActive: boolean }>;
+};
+
+export default async function AdminPage() {
+  const baseUrl = await getInternalBaseUrl();
+  const data = await fetchJsonSafe<AdminResponse>(`${baseUrl}/api/admin`, { users: [], suspiciousActivity: [], tasks: [] });
+
   return (
     <main className="space-y-4">
       <h1 className="text-2xl font-bold">Admin Panel</h1>
-      <div className="grid gap-4 md:grid-cols-2">
-        <section className="glass rounded-xl p-5">
-          <h2 className="font-semibold">Create / Disable Tasks</h2>
-          <p className="mt-2 text-sm text-slate-300">Manage campaign tasks, rewards, and active state.</p>
-        </section>
-        <section className="glass rounded-xl p-5">
-          <h2 className="font-semibold">Users</h2>
-          <p className="mt-2 text-sm text-slate-300">View registered users and wallet connection status.</p>
-        </section>
-        <section className="glass rounded-xl p-5">
-          <h2 className="font-semibold">Suspicious Activity</h2>
-          <p className="mt-2 text-sm text-slate-300">Inspect anti-bot alerts, abuse attempts, and enforcement outcomes.</p>
-        </section>
-        <section className="glass rounded-xl p-5">
-          <h2 className="font-semibold">Referral Stats</h2>
-          <p className="mt-2 text-sm text-slate-300">Track referral volume, conversion quality, and reward issuance.</p>
-        </section>
-      </div>
+      <AdminPanelClient initialData={data} />
     </main>
   );
 }

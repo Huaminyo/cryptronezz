@@ -27,6 +27,15 @@ export async function getReferralStats(userId: number) {
   return { total: Number(count?.total || 0) };
 }
 
+export async function getUserPointsTotal(userId: number) {
+  const [summary] = await db
+    .select({ total: sql<number>`COALESCE(SUM(${points.amount}), 0)` })
+    .from(points)
+    .where(eq(points.userId, userId));
+
+  return Number(summary?.total || 0);
+}
+
 export async function maxReferralsPerIpToday(ipAddress: string) {
   const start = new Date(Date.now() - 24 * 60 * 60 * 1000);
   const [count] = await db
