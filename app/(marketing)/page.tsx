@@ -10,6 +10,7 @@ const sections = [
 ];
 
 export default function MarketingPage() {
+  console.log("[v0] Marketing page rendering");
   return (
     <main className="space-y-16 pb-12">
       <section className="glass mt-6 p-10 text-center">
