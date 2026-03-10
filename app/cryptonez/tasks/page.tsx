@@ -1,20 +1,21 @@
 import { TaskCard } from "@/components/cryptonez/TaskCard";
+import { listActiveTasks } from "@/lib/cryptonez/tasks";
 
-const taskPreview = [
-  { title: "Follow on Twitter", description: "Follow @cryptonez", points: 15, type: "follow_twitter", link: "https://x.com" },
-  { title: "Join Discord", description: "Enter the Cryptonez server", points: 20, type: "join_discord", link: "https://discord.com" },
-  { title: "Daily Login", description: "Keep your streak active", points: 5, type: "daily_login", link: "#" }
-] as const;
+export default async function TasksPage() {
+  const tasks = await listActiveTasks();
 
-export default function TasksPage() {
   return (
     <main className="space-y-4">
-      <h1 className="text-2xl font-bold">Tasks</h1>
-      <div className="grid gap-4 md:grid-cols-3">
-        {taskPreview.map((task) => (
-          <TaskCard key={task.title} task={task} />
-        ))}
-      </div>
+      <h1 className="text-2xl font-bold">Available Tasks</h1>
+      {tasks.length === 0 ? (
+        <p className="text-slate-400">No tasks available at the moment. Check back soon!</p>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-3">
+          {tasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))}
+        </div>
+      )}
     </main>
   );
 }
