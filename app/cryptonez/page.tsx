@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ReferralCard } from "@/components/cryptonez/ReferralCard";
 import { StatsCard } from "@/components/cryptonez/StatsCard";
 import { WalletConnectCard } from "@/components/cryptonez/WalletConnectCard";
@@ -49,13 +48,6 @@ export default async function CryptonezDashboard() {
         <WalletConnectCard />
         <ReferralCard code={referralData?.referralCode ?? "-"} total={referrals} />
       </section>
-
-      <nav className="glass flex flex-wrap gap-3 rounded-xl p-4">
-        <Link className="rounded-lg bg-white/10 px-4 py-2" href="/cryptonez/tasks">Tasks</Link>
-        <Link className="rounded-lg bg-white/10 px-4 py-2" href="/cryptonez/referrals">Referrals</Link>
-        <Link className="rounded-lg bg-white/10 px-4 py-2" href="/cryptonez/leaderboard">Leaderboard</Link>
-        <Link className="rounded-lg bg-white/10 px-4 py-2" href="/cryptonez/admin">Admin</Link>
-      </nav>
     </main>
   );
 }
